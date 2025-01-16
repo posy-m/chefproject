@@ -1,17 +1,17 @@
+
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
+
 @Table({
-  tableName: 'savedAnnouncement',
-  timestamps: true,
+  tableName: 'managerSite'
 })
 
-export class SavedAnnouncement extends Model {
+export class ManagerSite extends Model {
   @Column({
     type: DataType.INTEGER,
-    primaryKey: true,
     autoIncrement: true,
+    primaryKey: true,
     allowNull: false,
   })
-  savedID: number;
-
+  statisticsID: number
 }
