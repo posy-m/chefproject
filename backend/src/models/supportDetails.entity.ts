@@ -1,6 +1,7 @@
-import { AutoIncrement, BelongsTo, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { RecruitmentNotice } from './recruitmentNotice.entity';
 import { Users } from './userDB.entity';
+import { Resume } from './resume.entity';
 
 
 @Table({
@@ -27,6 +28,10 @@ export class SupportDetails extends Model {
   })
   companyId: number
 
+  @ForeignKey(() => Resume)
+  @Column
+  resumeId: number;
+
   // users
   @BelongsTo(() => Users, {
     foreignKey: 'userId',
@@ -41,5 +46,9 @@ export class SupportDetails extends Model {
     targetKey: 'companyId'
   })
   recruitmentNotice: RecruitmentNotice;
+
+  //Resume
+  @BelongsTo(() => Resume)
+  resume: Resume;
 
 }

@@ -55,8 +55,6 @@ export class RecruitmentNotice extends Model {
   })
   user: Users;
 
-
-
   // 저장한 이미지
   @HasMany(() => CompanyImg, {
     sourceKey: 'companyId',
