@@ -1,10 +1,10 @@
+import { config } from 'dotenv'
+config();
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { config } from 'dotenv'
 import { Users, UserType } from './models/userDB.entity';
 import * as bcrypt from 'bcrypt';
 
-config();
 
 @Injectable()
 export class AppService implements OnModuleInit {

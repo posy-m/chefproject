@@ -1,5 +1,5 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
-
+import { BelongsTo, Column, DataType, Model, Table, ForeignKey } from 'sequelize-typescript';
+import { Users } from './userDB.entity';
 
 @Table({
   tableName: 'companyInfo'
@@ -10,13 +10,25 @@ export class CompanyInfo extends Model {
     type: DataType.INTEGER,
     primaryKey: true,
     allowNull: false,
+    autoIncrement: true
   })
-  businessID: number; // 외래 키
+  businessID: number;
+
+  @ForeignKey(() => Users)
+  @Column({
+    type: DataType.INTEGER
+  })
+  userId: number;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  businessNumber: string
+  businessNumber: string;
 
+  @BelongsTo(() => Users, {
+    foreignKey: 'userId',
+    targetKey: 'userId'
+  })
+  users: Users;
 }

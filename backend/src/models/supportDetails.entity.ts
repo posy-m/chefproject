@@ -1,5 +1,6 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { AutoIncrement, BelongsTo, Column, DataType, Model, Table } from 'sequelize-typescript';
 import { RecruitmentNotice } from './recruitmentNotice.entity';
+import { Users } from './userDB.entity';
 
 
 @Table({
@@ -16,10 +17,29 @@ export class SupportDetails extends Model {
   })
   applicationId: number;
 
-  // 채용 공고 
-  @HasMany(() => RecruitmentNotice, {
-    foreignKey: 'applicationId',
-    sourceKey: 'comapnyId'
+  @Column({
+    type: DataType.INTEGER
   })
-  recruitmentNotice: RecruitmentNotice[]
+  userId: number
+
+  @Column({
+    type: DataType.INTEGER
+  })
+  companyId: number
+
+  // users
+  @BelongsTo(() => Users, {
+    foreignKey: 'userId',
+    targetKey: 'userId'
+  })
+  users: Users
+
+
+  // 채용 공고 
+  @BelongsTo(() => RecruitmentNotice, {
+    foreignKey: 'companyId',
+    targetKey: 'companyId'
+  })
+  recruitmentNotice: RecruitmentNotice;
+
 }

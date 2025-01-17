@@ -1,5 +1,8 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { CompanyImg } from './companyImg.entity';
+import { SupportDetails } from './supportDetails.entity';
+import { SavedAnnouncement } from './savedAnnouncement.entity';
+import { Users } from './userDB.entity';
 
 @Table({
   tableName: 'recruitmentNotice',
@@ -14,6 +17,11 @@ export class RecruitmentNotice extends Model {
     allowNull: false,
   })
   companyId: number
+
+  @Column({
+    type: DataType.INTEGER
+  })
+  userId: number
 
   @Column({
     type: DataType.STRING,
@@ -39,10 +47,36 @@ export class RecruitmentNotice extends Model {
   })
   content: string
 
+  // users
+
+  @BelongsTo(() => Users, {
+    foreignKey: 'userId',
+    targetKey: 'userId'
+  })
+  user: Users;
+
+
+
   // 저장한 이미지
   @HasMany(() => CompanyImg, {
     sourceKey: 'companyId',
-    foreignKey: 'imageId',
+    foreignKey: 'companyId',
+
   })
   companyImg: CompanyImg[]
+
+  // 저장한 공고
+  @HasMany(() => SavedAnnouncement, {
+    sourceKey: 'companyId',
+    foreignKey: 'companyId',
+  })
+  savedAnnouncement: SavedAnnouncement[]
+
+
+  // 지원공고
+  @HasMany(() => SupportDetails, {
+    foreignKey: 'companyId',
+    sourceKey: 'companyId'
+  })
+  supportDetails: SupportDetails[];
 }

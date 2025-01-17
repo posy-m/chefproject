@@ -1,5 +1,6 @@
 
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Users } from './userDB.entity';
 
 
 @Table({
@@ -14,4 +15,15 @@ export class ManagerSite extends Model {
     allowNull: false,
   })
   statisticsID: number
+
+  @Column({
+    type: DataType.INTEGER
+  })
+  userId: number
+
+  @BelongsTo(() => Users, {
+    foreignKey: 'userId',
+    targetKey: 'userId'
+  })
+  users: Users
 }

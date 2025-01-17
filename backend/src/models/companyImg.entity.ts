@@ -1,4 +1,5 @@
-import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { RecruitmentNotice } from './recruitmentNotice.entity';
 
 
 @Table({
@@ -12,14 +13,27 @@ export class CompanyImg extends Model {
     type: DataType.INTEGER,
     primaryKey: true,
     allowNull: false,
+    autoIncrement: true
   })
   imageId: number
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  companyId: number
 
   @Column({
     type: DataType.STRING,
     allowNull: false
   })
   imgUrl: string;
+
+  @BelongsTo(() => RecruitmentNotice, {
+    foreignKey: 'companyId',
+    targetKey: 'companyId'
+  })
+  recruitmentNotice: RecruitmentNotice;
+
 }
 
 

@@ -1,10 +1,11 @@
 import { Table, Model, Column, DataType, HasMany, HasOne } from 'sequelize-typescript';
-import { CompanyInfo } from './companyInfo.entity';
 import { RecruitmentNotice } from './recruitmentNotice.entity';
 import { Resume } from './resume.entity';
 import { ManagerSite } from './managerSite.entity';
 import { SupportDetails } from './supportDetails.entity';
 import { SavedAnnouncement } from './savedAnnouncement.entity';
+import { CompanyInfo } from './companyInfo.entity';
+
 
 export enum UserType {
   COMPANY = 'company',
@@ -65,14 +66,14 @@ export class Users extends Model {
   //사업자 등록증
   @HasOne(() => CompanyInfo, {
     sourceKey: 'userId',
-    foreignKey: 'businessID'
+    foreignKey: 'userId'
   })
   companyInfo: CompanyInfo;
 
   // 채용 공고
   @HasMany(() => RecruitmentNotice, {
     sourceKey: 'userId',
-    foreignKey: 'companyId'
+    foreignKey: 'userId'
   })
   recruitmentNotice: RecruitmentNotice[]
 
@@ -80,28 +81,28 @@ export class Users extends Model {
   // 이력서
   @HasMany(() => Resume, {
     sourceKey: 'userId',
-    foreignKey: 'resumeID'
+    foreignKey: 'userId'
   })
   resume: Resume[]
 
   // 관리자 사이트
   @HasMany(() => ManagerSite, {
     sourceKey: 'userId',
-    foreignKey: 'statisticsID'
+    foreignKey: 'userId'
   })
   managerSite: ManagerSite[]
 
   // 지원내역 
   @HasMany(() => SupportDetails, {
     sourceKey: 'userId',
-    foreignKey: 'applicationId'
+    foreignKey: 'userId'
   })
   applicationId: SupportDetails[]
 
   // 저장한 공고 
   @HasMany(() => SavedAnnouncement, {
     sourceKey: 'userId',
-    foreignKey: 'imageId'
+    foreignKey: 'userId'
   })
   savedAnnouncement: SavedAnnouncement[]
 
