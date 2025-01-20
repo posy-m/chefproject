@@ -14,6 +14,12 @@ export class CreateResumeDto {
   file: string;
 }
 
+//이력서 수정
+export class UpdateResumeDto extends CreateResumeDto {
+  @IsNumber()
+  resumeId: number;
+}
+
 //이력서 삭제
 export class DeleteResumeDto {
   @IsNumber()

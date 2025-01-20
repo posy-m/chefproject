@@ -9,7 +9,6 @@ export class CompanyInfo extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
-    allowNull: false,
     autoIncrement: true
   })
   businessID: number;

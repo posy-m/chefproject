@@ -12,7 +12,6 @@ export class SavedAnnouncement extends Model {
     type: DataType.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    allowNull: false,
   })
   savedID: number;
 

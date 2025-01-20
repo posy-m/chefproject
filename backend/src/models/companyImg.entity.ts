@@ -12,7 +12,6 @@ export class CompanyImg extends Model {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
-    allowNull: false,
     autoIncrement: true
   })
   imageId: number

@@ -12,7 +12,6 @@ export class Resume extends Model {
     type: DataType.INTEGER,
     primaryKey: true,
     autoIncrement: true,
-    allowNull: false,
   })
   resumeID: number;
 

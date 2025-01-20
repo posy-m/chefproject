@@ -22,7 +22,6 @@ export enum UserType {
 export class Users extends Model {
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
     autoIncrement: true,
     primaryKey: true
   })

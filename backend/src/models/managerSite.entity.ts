@@ -12,7 +12,6 @@ export class ManagerSite extends Model {
     type: DataType.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    allowNull: false,
   })
   statisticsID: number
 

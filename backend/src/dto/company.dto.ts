@@ -21,11 +21,13 @@ export class CreateRecruimenDto {
   imageId?: number[];  // 이미지 테이블의 id를 저장
 }
 
+// 채용공고 수정 
 export class UpdateRecruimenDto extends CreateRecruimenDto {
   @IsNumber()
   companyId: number
 }
 
+//채용공고 삭제
 export class DeleteRecruimenDto {
   @IsNumber()
   companyId: number

@@ -14,7 +14,6 @@ export class RecruitmentNotice extends Model {
     type: DataType.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    allowNull: false,
   })
   companyId: number
 
