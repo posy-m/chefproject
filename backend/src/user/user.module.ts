@@ -1,0 +1,11 @@
+import { Module } from '@nestjs/common';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { Resume } from 'src/models/resume.entity';
+import { SavedAnnouncement } from 'src/models/savedAnnouncement.entity';
+import { SupportDetails } from 'src/models/supportDetails.entity';
+
+@Module({
+  imports: [SequelizeModule.forFeature([Resume, SupportDetails, SavedAnnouncement])],
+  providers: [Resume, SupportDetails, SavedAnnouncement],
+})
+export class UserModule { }

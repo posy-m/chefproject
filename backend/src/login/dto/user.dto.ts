@@ -28,7 +28,6 @@ export class CreateCompanyUserDto extends CreateUserDto {
 }
 
 
-
 // 로그인
 export class UserLginDto {
 
