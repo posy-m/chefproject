@@ -6,7 +6,7 @@ import { Users, UserType } from 'src/models/userDB.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UserService {
+export class LoginService {
   constructor(
     @InjectModel(Users)
     private userModel: typeof Users,

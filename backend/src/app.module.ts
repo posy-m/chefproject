@@ -1,12 +1,14 @@
 import { config } from 'dotenv'
 config()
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Resume } from './models/resume.entity';
 import { SavedAnnouncement } from './models/savedAnnouncement.entity';
 import { SupportDetails } from './models/supportDetails.entity';
-import { UserModule } from './login/user.module';
+import { LoginModule } from './login/login.module';
 import { RecruitmentNoticeModule } from './recruitment-notice/recruitment-notice.module';
+import { LoggerMiddleware } from './login/middleware/logger.middleware';
+import * as cookie from 'cookie-parser';
 
 
 
@@ -27,8 +29,17 @@ import { RecruitmentNoticeModule } from './recruitment-notice/recruitment-notice
       SavedAnnouncement,
       SupportDetails
     ]),
-    UserModule,
+    LoginModule,
     RecruitmentNoticeModule
   ],
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes('login')
+    consumer
+      .apply(cookie())
+      .forRoutes('*')
+  }
+}

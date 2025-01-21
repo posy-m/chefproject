@@ -9,7 +9,7 @@ export class LoggerMiddleware implements NestMiddleware {
     res.on('finish', () => {
       this.logger.log(`${res.statusCode}`, req.originalUrl)
     })
-    console.log('Request')
+    console.log('Request...')
     next()
   }
 }
