@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ESNext", /* 최신 JavaScript 기능을 사용 */
+    "module": "ESNext", /* ES 모듈 사용 */
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ], /* 브라우저 및 최신 ES 환경 지원 */
+    "jsx": "react-jsx", /* React JSX 지원 (React 17+에서 추천) */
+    /* Modules */
+    "moduleResolution": "node", /* Node.js 방식 모듈 해석 */
+    "baseUrl": "./", /* 기본 경로 설정 */
+    "paths": { /* 경로 매핑 (필요시 추가 가능) */
+      "@/*": [
+        "src/*"
+      ]
+    },
+    /* Interop Constraints */
+    "esModuleInterop": true, /* CommonJS 모듈 호환성 지원 */
+    "allowSyntheticDefaultImports": true, /* 기본 내보내기를 사용하는 모듈 호환성 */
+    /* Type Checking */
+    "strict": true, /* 엄격한 타입 검사 */
+    "noImplicitAny": true, /* 암시적 'any' 타입 금지 */
+    "strictNullChecks": true, /* 'null' 및 'undefined' 처리 */
+    "strictFunctionTypes": true, /* 함수 타입 검사 강화 */
+    "strictBindCallApply": true, /* 'bind', 'call', 'apply' 인자 검사 */
+    "forceConsistentCasingInFileNames": true, /* 대소문자 일관성 확인 */
+    /* JavaScript Support */
+    "allowJs": true, /* JS 파일 포함 허용 */
+    "checkJs": false, /* JS 파일 타입 검사 비활성화 */
+    /* Emit */
+    "noEmit": true, /* 빌드 시 파일 출력 비활성화 (React에선 보통 필요 없음) */
+    "skipLibCheck": true /* 라이브러리 타입 체크 건너뛰기 (빌드 속도 개선) */
+  },
+  "include": [
+    "src"
+  ], /* 포함할 파일 경로 */
+  "exclude": [
+    "node_modules",
+    "dist"
+  ] /* 제외할 경로 */
+}
