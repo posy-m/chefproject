@@ -1,0 +1,38 @@
+.header-box nav {
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5rem 0;
+}
+
+.header-box ul {
+  gap: 1.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.header-box ul li {
+  cursor: pointer;
+}
+
+.header-box img {
+  width: 2rem;
+}
+
+.header-box div {
+  width: 100%;
+  margin-left: 1.2rem;
+  height: 0.05rem;
+  background-color: #e4e4e4;
+}
+
+@media (max-width: 576px) {
+
+  .header-box nav {
+    padding: 0 1rem 0;
+  }
+
+  .header-box ul {
+    gap: 1rem;
+  }
+}

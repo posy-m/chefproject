@@ -35,7 +35,8 @@
     "skipLibCheck": true /* 라이브러리 타입 체크 건너뛰기 (빌드 속도 개선) */
   },
   "include": [
-    "src"
+    "src",
+    // "src/@types/custom.d.ts"
   ], /* 포함할 파일 경로 */
   "exclude": [
     "node_modules",

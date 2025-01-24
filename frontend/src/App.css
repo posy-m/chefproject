@@ -4,3 +4,12 @@
   margin: 0;
   padding: 0;
 }
+
+a {
+  text-decoration: none;
+  color: #292929;
+}
+
+ul li {
+  list-style-type: none;
+}
