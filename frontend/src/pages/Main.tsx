@@ -6,7 +6,8 @@ const Main = () => {
   return (
     <div>
       <main>
-        이게 메인 아니여?
+        메인페이지인뎅,,,
+        아직 뭐 없어영
       </main>
 
     </div>

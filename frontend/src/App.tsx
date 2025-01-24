@@ -20,6 +20,7 @@ function App() {
           <Route path="signupPage" element={<SignupPage />} />
           <Route path="userSignupPage" element={<UserSignUpPage />} />
           <Route path="companySignupPage" element={<CompanySignUpPage />} />
+          {/* </Route> */}
         </Route>
       </Routes>
     </div >
@@ -28,3 +29,5 @@ function App() {
 }
 
 export default App;
+
+

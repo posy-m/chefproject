@@ -5,13 +5,13 @@ import styles from '../styles/Layout.module.css'
 
 const LayOut = () => {
   return (
-    <div>
+    <div >
       <Header />
       <main className={styles['layout-main']}>
         <Outlet />
       </main>
-
     </div>
+
   )
 }
 
