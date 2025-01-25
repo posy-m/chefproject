@@ -1,0 +1,57 @@
+.signup-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  padding-top: 1.5rem;
+}
+
+.signup-box span {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.signup-box button {
+  width: 25rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background-color: #292929;
+  color: aliceblue;
+  cursor: pointer;
+}
+
+.signup-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.default-input {
+  width: 25rem;
+  height: 3rem;
+  padding-left: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #292929;
+}
+
+.signup-doublecheck {
+  display: flex;
+  gap: 0.5rem;
+
+}
+
+.signup-doublecheck button {
+  width: 4rem;
+  border-radius: 0.3rem;
+  background-color: #292929;
+  color: aliceblue;
+  cursor: pointer;
+}
+
+.signup-doublecheck input {
+  width: 20.5rem;
+  height: 3rem;
+  padding-left: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #292929;
+}
