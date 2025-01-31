@@ -55,3 +55,15 @@
   border-radius: 0.5rem;
   border: 1px solid #292929;
 }
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container span {
+  position: absolute;
+  right: 1.3rem;
+  color: rgb(106, 106, 106);
+}
