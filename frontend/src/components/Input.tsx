@@ -5,7 +5,7 @@ interface Props {
   className: string;
 }
 
-const Input = ({ placeholder, className = '' }: Props) => {
+const Input = ({ placeholder, className, }: Props) => {
   return (
     <div>
       <input type="text" placeholder={placeholder} className={`default-input ${className}`} />
