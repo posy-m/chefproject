@@ -11,6 +11,7 @@ import CompanySignUpPage from './pages/CompanySignUpPage';
 
 function App() {
   return (
+
     <div className="App">
       <Routes>
         <Route path='' element={<LayOut />}>
@@ -24,6 +25,7 @@ function App() {
         </Route>
       </Routes>
     </div >
+
 
   );
 }
