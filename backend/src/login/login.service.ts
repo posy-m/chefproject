@@ -1,11 +1,12 @@
 import { config } from 'dotenv'
 config();
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Users, UserType } from 'src/models/userDB.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateCompanyUserDto, CreateUserDto } from './dto/user.dto';
+import { Op } from 'sequelize';
 
 
 @Injectable()
@@ -16,17 +17,48 @@ export class LoginService {
     private readonly jwtService: JwtService
   ) { }
 
-  // 회원가입
-  async create(createUser: CreateUserDto): Promise<Users> {
+  // 개인회원가입
+  async createUser(createUser: CreateUserDto): Promise<Users> {
     const { name, email, phoneNumber, password } = createUser
 
     const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(createUser.password, salt)
-    console.log(hashedPassword, "이거 ");
+    const hashedPassword = await bcrypt.hash(password, salt)
     return this.userModel.create({
       name, email, phoneNumber, password: hashedPassword
     })
   }
+
+  // 기업 회원가입
+  async createCompanyUser(createCompany: CreateCompanyUserDto): Promise<Users> {
+    const { name, email, phoneNumber, password, businessNumber } = createCompany;
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+    return this.userModel.create({
+      name, email, phoneNumber, password: hashedPassword, businessNumber
+    })
+  }
+
+  //이메일,휴대폰 번호 중복검사
+  async checkDuplicate(email?: string, phoneNumber?: string): Promise<boolean> {
+    const conditions = [];
+    if (email) conditions.push({ email });
+    if (phoneNumber) conditions.push({ phoneNumber });
+    if (conditions.length === 0) {
+      throw new BadRequestException('이메일 또는 휴대폰 번호를 입력해주세요.');
+    }
+    const existingUser = await this.userModel.findOne({
+      where: { [Op.or]: conditions }
+    });
+    return !!existingUser;
+  }
+
+
+
+  //모든 데이터 조회
+  async findAll(): Promise<Users[]> {
+    return await this.userModel.findAll()
+  }
+
 
   //로그인
 

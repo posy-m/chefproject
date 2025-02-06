@@ -1,14 +1,15 @@
-import { IsNumber, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength } from 'class-validator';
-import { IsEmail, Length } from 'sequelize-typescript';
+import { IsEmail, IsNumber, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 // 개인 회원가입
 export class CreateUserDto {
   @IsString()
   name: string;
 
-  @IsEmail
+
+  @IsEmail()
   email: string;
 
+  @IsPhoneNumber(null)
   phoneNumber: string;
 
   @IsString()
@@ -31,7 +32,7 @@ export class CreateCompanyUserDto extends CreateUserDto {
 // 로그인
 export class UserLginDto {
 
-  @IsEmail
+  @IsEmail()
   email: string;
 
   @IsString()

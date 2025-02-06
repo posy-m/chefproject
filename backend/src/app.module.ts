@@ -11,7 +11,6 @@ import { LoggerMiddleware } from './login/middleware/logger.middleware';
 import * as cookie from 'cookie-parser';
 
 
-
 @Module({
   imports: [
     SequelizeModule.forRoot({
