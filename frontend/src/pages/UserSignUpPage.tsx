@@ -24,7 +24,7 @@ const UserSignUpPage = () => {
   const [showConfirmPw, setShowConfirmPw] = useState<boolean>(false);
 
 
-  //유효성 검사
+  //중복확인
   const checkDuplicateMutation = useMutation({
     mutationFn: async (data: { email?: string; phoneNumber?: string }) => {
       const response = await axios.post(`http://localhost:3001/login/check-duplicate`, data);
@@ -65,15 +65,16 @@ const UserSignUpPage = () => {
 
   // 회원가입 API 호출
   const signUpMutation = useMutation({
-    mutationFn: async (userData: { name: string; email: string; phoneNumber: string; password: string; }) => {
-      const response = await axios.post('http://localhost:3001/usersignup', userData);
+    mutationFn: async (userData: { name: string; email: string; phoneNumber: string; password: string; userType: string }) => {
+      const response = await axios.post('http://localhost:3001/login/usersignup', userData);
       return response.data;
     },
     onSuccess: () => {
       alert('회원가입이 완료되었습니다!');
-      navigate('/')
+      navigate('/loginPage')
     },
     onError: (error) => {
+      console.error("회원가입 에러:", error.message);
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
     }
   });
@@ -151,7 +152,7 @@ const UserSignUpPage = () => {
         {confirmPassword && password === confirmPassword && (<p className={styles['valid-feedback']}>비밀번호가 일치합니다.</p>)}
       </div>
       <button
-        disabled={!isSignUpEnabled()} onClick={() => signUpMutation.mutate({ name, email, phoneNumber, password })}>회원가입</button>
+        disabled={!isSignUpEnabled()} onClick={() => signUpMutation.mutate({ name, email, phoneNumber, password, userType: 'personal' })}>회원가입</button>
     </div >
   )
 }
