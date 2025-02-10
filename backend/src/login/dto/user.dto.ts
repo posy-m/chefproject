@@ -1,4 +1,5 @@
 import { IsEmail, IsNumber, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { UserType } from 'src/models/userDB.entity';
 
 // 개인 회원가입
 export class CreateUserDto {
@@ -19,6 +20,7 @@ export class CreateUserDto {
     message: '비밀번호는 최소 하나의 문자, 숫자, 특수문자를 포함해야 합니다.',
   })
   password: string;
+  userType: UserType;
 }
 
 // 기업 회원가입

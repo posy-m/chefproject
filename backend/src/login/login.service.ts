@@ -19,12 +19,12 @@ export class LoginService {
 
   // 개인회원가입
   async createUser(createUser: CreateUserDto): Promise<Users> {
-    const { name, email, phoneNumber, password } = createUser
+    const { name, email, phoneNumber, password, userType } = createUser
 
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
     return this.userModel.create({
-      name, email, phoneNumber, password: hashedPassword
+      name, email, phoneNumber, password: hashedPassword, userType: userType || UserType.PERSONAL
     })
   }
 

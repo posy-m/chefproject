@@ -10,8 +10,14 @@ export class LoginController {
   //일반 회원가입
   @Post('/usersignup')
   async signup(@Body() signupDTO: CreateUserDto) {
-    const createdUser = await this.loginService.createUser(signupDTO);
-    return createdUser;
+    console.log(signupDTO, "회원가입 요청 데이터");
+    try {
+      const createdUser = await this.loginService.createUser(signupDTO);
+      return createdUser;
+    } catch (error) {
+      console.error('회원가입 실패', error)
+    }
+
   }
 
 
