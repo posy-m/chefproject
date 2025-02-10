@@ -67,3 +67,15 @@
   right: 1.3rem;
   color: rgb(106, 106, 106);
 }
+
+/* 에러 스타일 */
+.valid-feedback {
+  color: green;
+  font-size: 0.8rem;
+}
+
+.error-feedback {
+  color: red;
+  font-size: 0.8rem;
+
+}
