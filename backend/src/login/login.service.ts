@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Users, UserType } from 'src/models/userDB.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { CreateCompanyUserDto, CreateUserDto } from './dto/user.dto';
+import { CreateCompanyUserDto, CreateUserDto, UserLoginDto } from './dto/user.dto';
 import { Op } from 'sequelize';
 
 
@@ -61,6 +61,26 @@ export class LoginService {
 
 
   //로그인
+  async login(login: UserLoginDto): Promise<{ accessToken: string }> {
+    const { email, password } = login;
+
+    const user = await this.userModel.findOne({ where: { email } })
+    if (!user) {
+      throw new BadRequestException('이메일이 잘못 됨')
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+    if (!isPasswordValid) {
+      throw new BadRequestException('비밀번호가 잘못 됨')
+    }
+
+    const payload = { id: user.id, email: user.email, userType: user.userType };
+    const accessToken = await this.jwtService.signAsync(payload)
+
+    return { accessToken }
+
+  }
+
 
 
   // 관리자 아이디 생성

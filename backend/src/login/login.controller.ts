@@ -1,6 +1,6 @@
 import { BadRequestException, Body, ConflictException, Controller, Get, Post, Query, UseInterceptors } from '@nestjs/common';
 import { LoginService } from './login.service';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto, UserLoginDto } from './dto/user.dto';
 
 @UseInterceptors()
 @Controller('login')
@@ -8,7 +8,7 @@ export class LoginController {
   constructor(private readonly loginService: LoginService) { }
 
   //일반 회원가입
-  @Post('/usersignup')
+  @Post('usersignup')
   async signup(@Body() signupDTO: CreateUserDto) {
     console.log(signupDTO, "회원가입 요청 데이터");
     try {
@@ -20,8 +20,8 @@ export class LoginController {
 
   }
 
-
-  @Post('/check-duplicate')
+  // 유효성 체크
+  @Post('check-duplicate')
   async checkDuplicate(@Body() body: { email?: string; phoneNumber?: string }) {
     const { email, phoneNumber } = body;
     if (!email && !phoneNumber) {
@@ -34,4 +34,9 @@ export class LoginController {
     return { message: '사용 가능' };
   }
 
+  // 로그인
+  @Post('login')
+  async login(@Body() loginDto: UserLoginDto) {
+    return this.loginService.login(loginDto)
+  }
 }

@@ -10,7 +10,10 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [SequelizeModule.forFeature([Users, CompanyInfo, ManagerSite])
-    , JwtModule.register({ signOptions: { expiresIn: '60s' } }), ConfigModule.forRoot()],
+    , JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' }
+    }), ConfigModule.forRoot()],
   controllers: [LoginController],
   providers: [LoginService]
 })

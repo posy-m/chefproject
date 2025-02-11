@@ -32,7 +32,7 @@ export class CreateCompanyUserDto extends CreateUserDto {
 
 
 // 로그인
-export class UserLginDto {
+export class UserLoginDto {
 
   @IsEmail()
   email: string;
