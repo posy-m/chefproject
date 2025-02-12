@@ -74,7 +74,7 @@ const UserSignUpPage = () => {
       navigate('/loginPage')
     },
     onError: (error) => {
-      console.error("회원가입 에러:", error.message);
+      // console.error("회원가입 에러:", error.message);
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
     }
   });

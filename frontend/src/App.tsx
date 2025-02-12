@@ -8,6 +8,9 @@ import LgoinPage from './pages/LgoinPage';
 import SignupPage from './pages/SignupPage';
 import UserSignUpPage from './pages/UserSignUpPage';
 import CompanySignUpPage from './pages/CompanySignUpPage';
+import UserPage from './pages/UserPage';
+import CompanyPage from './pages/CompanyPage';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
           <Route path="signupPage" element={<SignupPage />} />
           <Route path="userSignupPage" element={<UserSignUpPage />} />
           <Route path="companySignupPage" element={<CompanySignUpPage />} />
+          <Route path='userPage' element={<UserPage />} />
+          <Route path='compnayPage' element={<CompanyPage />} />
+          <Route path='adminPage' element={<AdminPage />} />
           {/* </Route> */}
         </Route>
       </Routes>

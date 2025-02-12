@@ -2,21 +2,26 @@ import { create } from 'zustand';
 
 interface AuthState {
   accessToken: string | null;
-  setAccessToken: (token: string) => void;
+  userType: 'admin' | 'company' | 'personal' | null;
+  setAuth: (token: string, userType: 'admin' | 'company' | 'personal') => void;
   logout: () => void;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
   accessToken: localStorage.getItem('accessToken') || null,
-  setAccessToken: (token) => {
-    localStorage.setItem('accessToken', token);
-    console.log('저장할 토큰', token);
+  userType: localStorage.getItem('userType') as 'admin' | 'company' | 'personal' | null,
 
-    set({ accessToken: token });
+  setAuth: (token, userType) => {
+    localStorage.setItem('accessToken', token);
+    localStorage.setItem('userType', userType);
+
+    set({ accessToken: token, userType });
   },
+
   logout: () => {
     localStorage.removeItem('accessToken');
-    set({ accessToken: null });
+    localStorage.removeItem('userType');
+    set({ accessToken: null, userType: null });
   },
 }));
 

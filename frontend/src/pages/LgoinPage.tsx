@@ -18,7 +18,7 @@ function LgoinPage() {
 
   //show pw
   const [showPw, setShowPw] = useState<boolean>(false);
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const setAccessToken = useAuthStore((state) => state.setAuth);
 
   // 이메일 형식 검사
   const validateEmail = (email: string) => {
@@ -39,15 +39,29 @@ function LgoinPage() {
       return response.data;
     },
     onSuccess: (data) => {
-      setAccessToken(data.accessToken);
+      setAccessToken(data.accessToken, data.userType);
       alert('로그인이 되었습니다.');
       navigate('/');
     },
     onError: (error: any) => {
-      setEmailValid(false);
-      setCheckEmailMessage('이메일을 다시 확인해 주세요');
-      setPasswordValid(false);
-      setCheckPasswordMessage('비밀번호를 다시 확인해주세요');
+      // console.error('로그인 에러:', error.response?.data);
+      const errorMessage = error.response?.data?.message;
+
+      if (errorMessage === '이메일이 잘못 됨') {
+        setEmailValid(false);
+        setCheckEmailMessage('이메일을 다시 확인해 주세요');
+        setPasswordValid(null);
+        setCheckPasswordMessage('');
+      } else if (errorMessage === '비밀번호가 잘못 됨') {
+        setPasswordValid(false);
+        setCheckPasswordMessage('비밀번호를 다시 확인해주세요');
+        setEmailValid(true);
+      } else {
+        setEmailValid(false);
+        setPasswordValid(false);
+        setCheckEmailMessage('로그인 정보를 확인해 주세요');
+        setCheckPasswordMessage('로그인 정보를 확인해 주세요');
+      }
     },
   });
 
