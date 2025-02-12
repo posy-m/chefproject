@@ -11,6 +11,8 @@ import CompanySignUpPage from './pages/CompanySignUpPage';
 import UserPage from './pages/UserPage';
 import CompanyPage from './pages/CompanyPage';
 import AdminPage from './pages/AdminPage';
+import FindID from './pages/find/FindID';
+import FindPassword from './pages/find/FindPassword';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route path='userPage' element={<UserPage />} />
           <Route path='compnayPage' element={<CompanyPage />} />
           <Route path='adminPage' element={<AdminPage />} />
+          <Route path='findId' element={<FindID />} />
+          <Route path='findPassword' element={<FindPassword />} />
           {/* </Route> */}
         </Route>
       </Routes>

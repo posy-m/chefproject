@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../styles/UserSignupPage.module.css'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import axiosInstance from '../zustand/axiosInstance';
@@ -87,7 +87,14 @@ function LgoinPage() {
       <button onClick={() => loginMutation.mutate({ email, password })}>로그인</button>
       {emailValid === false && <p className={styles['error-feedback']}>{checkEmailMessage}</p>}
       {passwordValid === false && <p className={styles['error-feedback']}>{checkPasswordMessage}</p>}
+      <div>
+        <ul>
+          <li><Link to='/findId'>아이디 찾기</Link></li>
+          <li><Link to='/findPassword'>아이디 찾기</Link></li>
+        </ul>
+      </div>
     </div>
+
   )
 }
 
