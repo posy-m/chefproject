@@ -1,12 +1,24 @@
 import React, { useState } from 'react'
 import styles from '../styles/UserSignupPage.module.css'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import axiosInstance from '../zustand/axiosInstance';
+import useAuthStore from '../zustand/authStore';
 
 function LgoinPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>('')
+  const [checkEmailMessage, setCheckEmailMessage] = useState('')
+  const [emailValid, setEmailValid] = useState<null | boolean>(null)
   const [password, setPassword] = useState<string>('')
+  const [checkPasswordMessage, setCheckPasswordMessage] = useState('')
+  const [passwordValid, setPasswordValid] = useState<null | boolean>(null)
+
   //show pw
   const [showPw, setShowPw] = useState<boolean>(false);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   // 이메일 형식 검사
   const validateEmail = (email: string) => {
@@ -19,6 +31,27 @@ function LgoinPage() {
     const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{5,20}$/;
     return passwordRegex.test(password);
   };
+
+  // 로그인 API 호출
+  const loginMutation = useMutation({
+    mutationFn: async (loginData: { email: string; password: string }) => {
+      const response = await axiosInstance.post('/login/login', loginData);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      setAccessToken(data.accessToken);
+      alert('로그인이 되었습니다.');
+      navigate('/');
+    },
+    onError: (error: any) => {
+      setEmailValid(false);
+      setCheckEmailMessage('이메일을 다시 확인해 주세요');
+      setPasswordValid(false);
+      setCheckPasswordMessage('비밀번호를 다시 확인해주세요');
+    },
+  });
+
+
 
 
   return (
@@ -37,7 +70,9 @@ function LgoinPage() {
           <p className={styles['error-feedback']}>비밀번호는 5~20자이며, 특수기호를 포함해야 합니다.</p>
         )}
       </div>
-      <button>로그인</button>
+      <button onClick={() => loginMutation.mutate({ email, password })}>로그인</button>
+      {emailValid === false && <p className={styles['error-feedback']}>{checkEmailMessage}</p>}
+      {passwordValid === false && <p className={styles['error-feedback']}>{checkPasswordMessage}</p>}
     </div>
   )
 }
