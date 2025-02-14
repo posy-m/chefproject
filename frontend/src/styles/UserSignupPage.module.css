@@ -77,5 +77,23 @@
 .error-feedback {
   color: red;
   font-size: 0.8rem;
+}
 
+/* 찾기 */
+.find-style ul {
+  display: flex;
+  gap: 1rem;
+}
+
+/* 이메일 찾기*/
+.find-email-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.find-email-box span {
+  display: flex;
+  font-size: 0.8rem;
 }

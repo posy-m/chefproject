@@ -31,7 +31,6 @@ function App() {
           <Route path='adminPage' element={<AdminPage />} />
           <Route path='findId' element={<FindID />} />
           <Route path='findPassword' element={<FindPassword />} />
-          {/* </Route> */}
         </Route>
       </Routes>
     </div >

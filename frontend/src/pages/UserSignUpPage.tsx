@@ -4,6 +4,7 @@ import styles from '../styles/UserSignupPage.module.css'
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../zustand/axiosInstance';
 
 const UserSignUpPage = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const UserSignUpPage = () => {
   //중복확인
   const checkDuplicateMutation = useMutation({
     mutationFn: async (data: { email?: string; phoneNumber?: string }) => {
-      const response = await axios.post(`http://localhost:3001/login/check-duplicate`, data);
+      const response = await axiosInstance.post(`/login/check-duplicate`, data);
       return response.data;
     },
     onSuccess: (_, variables) => {
@@ -66,7 +67,7 @@ const UserSignUpPage = () => {
   // 회원가입 API 호출
   const signUpMutation = useMutation({
     mutationFn: async (userData: { name: string; email: string; phoneNumber: string; password: string; userType: string }) => {
-      const response = await axios.post('http://localhost:3001/login/usersignup', userData);
+      const response = await axiosInstance.post('/login/usersignup', userData);
       return response.data;
     },
     onSuccess: () => {

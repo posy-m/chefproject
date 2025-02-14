@@ -87,10 +87,10 @@ function LgoinPage() {
       <button onClick={() => loginMutation.mutate({ email, password })}>로그인</button>
       {emailValid === false && <p className={styles['error-feedback']}>{checkEmailMessage}</p>}
       {passwordValid === false && <p className={styles['error-feedback']}>{checkPasswordMessage}</p>}
-      <div>
+      <div className={styles['find-style']}>
         <ul>
           <li><Link to='/findId'>아이디 찾기</Link></li>
-          <li><Link to='/findPassword'>아이디 찾기</Link></li>
+          <li><Link to='/findPassword'>비밀번호 찾기</Link></li>
         </ul>
       </div>
     </div>
