@@ -46,7 +46,7 @@ export class UserLoginDto {
   password: string;
 }
 
-// 아이디 찾기
+// 이메일 찾기
 export class FindUserIdDto {
   @IsString()
   name?: string;

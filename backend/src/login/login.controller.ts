@@ -1,6 +1,6 @@
 import { BadRequestException, Body, ConflictException, Controller, Get, Post, Query, UseInterceptors } from '@nestjs/common';
 import { LoginService } from './login.service';
-import { CreateUserDto, UserLoginDto } from './dto/user.dto';
+import { CreateUserDto, FindUserIdDto, UserLoginDto } from './dto/user.dto';
 
 @UseInterceptors()
 @Controller('login')
@@ -38,5 +38,11 @@ export class LoginController {
   @Post('login')
   async login(@Body() loginDto: UserLoginDto) {
     return this.loginService.login(loginDto)
+  }
+
+  // 이메일 찾기
+  @Post('findemil')
+  async findEmail(@Body() findEmailDto: FindUserIdDto) {
+    return this.loginService.findEmail(findEmailDto)
   }
 }

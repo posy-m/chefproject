@@ -1,11 +1,11 @@
 import { config } from 'dotenv'
 config();
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Users, UserType } from 'src/models/userDB.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { CreateCompanyUserDto, CreateUserDto, UserLoginDto } from './dto/user.dto';
+import { CreateCompanyUserDto, CreateUserDto, FindUserIdDto, UserLoginDto } from './dto/user.dto';
 import { Op } from 'sequelize';
 
 
@@ -61,7 +61,7 @@ export class LoginService {
 
 
   //로그인
-  async login(login: UserLoginDto): Promise<{ accessToken: string }> {
+  async login(login: UserLoginDto): Promise<{ accessToken: string, userType: string }> {
     const { email, password } = login;
 
     const user = await this.userModel.findOne({ where: { email } })
@@ -77,9 +77,20 @@ export class LoginService {
     const payload = { id: user.id, email: user.email, userType: user.userType };
     const accessToken = await this.jwtService.signAsync(payload)
 
-    return { accessToken }
+    return { accessToken, userType: user.userType }
 
   }
+
+  //이메일 찾기
+  async findEmail(data: FindUserIdDto): Promise<string> {
+    const user = await this.userModel.findOne({ where: { data } })
+    if (!user) {
+      throw new NotFoundException('사용자를 찾을 수 없습니다.')
+    }
+    return user.email
+  }
+
+  //비밀번호 변경
 
 
 
