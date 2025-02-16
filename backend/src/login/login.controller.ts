@@ -1,6 +1,6 @@
 import { BadRequestException, Body, ConflictException, Controller, Get, Post, Query, UseInterceptors } from '@nestjs/common';
 import { LoginService } from './login.service';
-import { CreateUserDto, FindUserIdDto, UserLoginDto } from './dto/user.dto';
+import { CreateUserDto, FindUserIdDto, UserCheckDto, UserLoginDto } from './dto/user.dto';
 
 @UseInterceptors()
 @Controller('login')
@@ -41,8 +41,20 @@ export class LoginController {
   }
 
   // 이메일 찾기
-  @Post('findemil')
+  @Post('findemail')
   async findEmail(@Body() findEmailDto: FindUserIdDto) {
     return this.loginService.findEmail(findEmailDto)
   }
+
+  //유저확인
+  @Post('verifyUser')
+  async verifyUser(@Body() userCheckDto: UserCheckDto) {
+    const isValid = await this.loginService.verifyUser(userCheckDto);
+    if (!isValid) {
+      throw new BadRequestException('이메일 또는 비밀번호가 일치하지 않습니다.')
+    }
+    return { message: '본인확인 완료' }
+  }
+
+
 }

@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Users, UserType } from 'src/models/userDB.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { CreateCompanyUserDto, CreateUserDto, FindUserIdDto, UserLoginDto } from './dto/user.dto';
+import { ChangePasswordDto, CreateCompanyUserDto, CreateUserDto, FindUserIdDto, UserCheckDto, UserLoginDto } from './dto/user.dto';
 import { Op } from 'sequelize';
 
 
@@ -54,6 +54,8 @@ export class LoginService {
 
 
 
+
+
   //모든 데이터 조회
   async findAll(): Promise<Users[]> {
     return await this.userModel.findAll()
@@ -82,15 +84,30 @@ export class LoginService {
   }
 
   //이메일 찾기
-  async findEmail(data: FindUserIdDto): Promise<string> {
-    const user = await this.userModel.findOne({ where: { data } })
+  async findEmail(data: FindUserIdDto): Promise<{ email: string }> {
+    const userByName = await this.userModel.findOne({
+      where: { name: data.name }
+    })
+    const user = await this.userModel.findOne({ where: { name: data.name, phoneNumber: data.phoneNumber } })
+    if (!userByName) {
+      throw new NotFoundException('사용자를 찾을 수 없습니다.')
+    }
     if (!user) {
       throw new NotFoundException('사용자를 찾을 수 없습니다.')
     }
-    return user.email
+    return { email: user.email }
   }
 
-  //비밀번호 변경
+  //비밀번호 찾기 위한 인증(email, password)
+  async verifyUser(data: UserCheckDto): Promise<boolean> {
+    const { email, phoneNumber } = data
+    const user = await this.userModel.findOne({ where: { email } })
+    if (!user || user.phoneNumber !== phoneNumber) {
+      return false
+    }
+    return true
+  }
+
 
 
 

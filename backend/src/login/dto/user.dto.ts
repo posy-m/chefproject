@@ -55,11 +55,16 @@ export class FindUserIdDto {
   phoneNumber?: string;
 }
 
-// 비밀번호 찾기
-export class ForgotPasswordDto {
+// 인증 (email, phoneNumber)
+export class UserCheckDto {
   @IsString()
-  password: string;
+  email: string;
+
+  @IsPhoneNumber(null)
+  phoneNumber?: string;
 }
+
+
 
 // 비밀번호 변경
 export class ChangePasswordDto {
