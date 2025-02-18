@@ -5,8 +5,9 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Users, UserType } from 'src/models/userDB.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ChangePasswordDto, CreateCompanyUserDto, CreateUserDto, FindUserIdDto, UserCheckDto, UserLoginDto } from './dto/user.dto';
+import { ChangePasswordDto, CreateCompanyUserDto, CreateUserDto, FindUserIdDto, ResetPasswordDto, UserCheckDto, UserLoginDto } from './dto/user.dto';
 import { Op } from 'sequelize';
+import { HashingService } from './hashing.service';
 
 
 @Injectable()
@@ -14,7 +15,8 @@ export class LoginService {
   constructor(
     @InjectModel(Users)
     private readonly userModel: typeof Users,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly hashingService: HashingService,
   ) { }
 
   // 개인회원가입
@@ -99,13 +101,37 @@ export class LoginService {
   }
 
   //비밀번호 찾기 위한 인증(email, password)
-  async verifyUser(data: UserCheckDto): Promise<boolean> {
-    const { email, phoneNumber } = data
+  async verifyUser(data: UserCheckDto): Promise<{ resetToken: string }> {
+    const { email, phoneNumber } = data;
     const user = await this.userModel.findOne({ where: { email } })
     if (!user || user.phoneNumber !== phoneNumber) {
-      return false
+      throw new BadRequestException('이메일 또는 전화번호가 일치하지 않습니다.')
     }
-    return true
+    const resetToken = this.jwtService.sign(
+      { user: user.id },
+      { secret: process.env.JWT_SECRET, expiresIn: '15m' },
+    )
+
+    return { resetToken };
+
+  }
+
+  // 비밀번호 재설정 로직
+  async restPassword(data: ResetPasswordDto): Promise<string> {
+    const { resetToken, newPassword } = data;
+    try {
+      const decoded = this.jwtService.verify(resetToken, { secret: process.env.JWT_SECRET });
+      const user = await this.userModel.findByPk(decoded.userId)
+      if (!user) {
+        throw new BadRequestException('잘못된 요청입니다.')
+      }
+      user.password = await this.hashingService.hash(newPassword);
+      await user.save();
+
+      return '비밀버번호가 변경되었습니다.'
+    } catch (error) {
+      throw new BadRequestException('말료된 토큰입니다.')
+    }
   }
 
 

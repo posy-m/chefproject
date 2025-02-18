@@ -7,6 +7,7 @@ import { ManagerSite } from 'src/models/managerSite.entity';
 import { LoginController } from './login.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { HashingService } from './hashing.service';
 
 @Module({
   imports: [SequelizeModule.forFeature([Users, CompanyInfo, ManagerSite])
@@ -15,6 +16,6 @@ import { ConfigModule } from '@nestjs/config';
       signOptions: { expiresIn: '1h' }
     }), ConfigModule.forRoot()],
   controllers: [LoginController],
-  providers: [LoginService]
+  providers: [LoginService, HashingService],
 })
 export class LoginModule { }

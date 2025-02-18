@@ -64,6 +64,22 @@ export class UserCheckDto {
   phoneNumber?: string;
 }
 
+//비밀번호 재설정
+export class ResetPasswordDto {
+  @IsString()
+  resetToken: string;
+
+  @IsString()
+  @IsString()
+  @MinLength(5, { message: '비밀번호는 최소 5자 이상이어야 합니다.' })
+  @MaxLength(20, { message: '비밀번호는 최대 20자까지 가능합니다.' })
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).*$/, {
+    message: '비밀번호는 최소 하나의 문자, 숫자, 특수문자를 포함해야 합니다.',
+  })
+  newPassword: string;
+}
+
+
 
 
 // 비밀번호 변경
