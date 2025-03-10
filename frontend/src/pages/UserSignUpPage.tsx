@@ -38,7 +38,7 @@ const UserSignUpPage = () => {
       }
       if (variables.phoneNumber) {
         setPhoneValid(true);
-        setPhoneMessage('사용 가능한 휴대폰 번호입니다.');
+        setPhoneMessage('사용 가능한 휴대폰번호입니다.');
       }
     },
     onError: (error, variables) => {
@@ -91,7 +91,7 @@ const UserSignUpPage = () => {
     password === confirmPassword;
 
 
-  //휴대혼 번호 유효성 검사
+  //휴대폰 번호 유효성 검사
   const validatePhone = (phoneNumber: string) => {
     const phoneRegex = /^01[0-9]{8,9}$/; // 한국 휴대폰 번호 형식 검사
     return phoneRegex.test(phoneNumber);
