@@ -7,8 +7,14 @@ const CompanySignUpPage = () => {
   const [password, setPassword] = useState<string>('')
   const [showPw, setShowPw] = useState<boolean>(false);
 
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [showConfirmPw, setShowConfirmPw] = useState<boolean>(false);
+
+  // 비밀번호 조건 검사 (5~20자, 특수기호 포함)
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{5,20}$/;
+    return passwordRegex.test(password);
+  };
   return (
     <div className={styles['signup-box']}>
       <span>기업 회원가입</span>
@@ -32,13 +38,18 @@ const CompanySignUpPage = () => {
             onChange={(e) => setPassword(e.target.value)} value={password} />
           <span onClick={() => setShowPw((prev) => !prev)}>{showPw ? <AiFillEye size={25} /> : <AiFillEyeInvisible size={25} />}</span>
         </div>
+        {!validatePassword(password) && password.length > 0 && (
+          <p className={styles['error-feedback']}>비밀번호는 5~20자이며, 특수기호를 포함해주세요</p>
+        )}
+
         <div className={styles['password-container']}>
           <input placeholder='비밀번호 확인' className={styles['default-input']}
             type={showConfirmPw ? 'text' : 'password'} required minLength={5} maxLength={20}
             onChange={(e) => setConfirmPassword(e.target.value)} />
           <span onClick={() => setShowConfirmPw((prev) => !prev)}>{showConfirmPw ? <AiFillEye size={25} /> : <AiFillEyeInvisible size={25} />}</span>
-
         </div>
+        {confirmPassword && password !== confirmPassword && (<p className={styles['error-feedback']}>비밀번호가 일치하지 않습니다.</p>)}
+        {confirmPassword && password === confirmPassword && (<p className={styles['valid-feedback']}>비밀번호가 일치합니다.</p>)}
       </div>
       <button>회원가입</button>
     </div>
