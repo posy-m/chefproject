@@ -20,7 +20,7 @@ export class LoginController {
 
   }
 
-  // 유효성 체크
+  // 개인_이메일,번호중복검사
   @Post('check-duplicate')
   async checkDuplicate(@Body() body: { email?: string; phoneNumber?: string }) {
     const { email, phoneNumber } = body;
@@ -32,6 +32,21 @@ export class LoginController {
       throw new ConflictException('이미 사용 중인 이메일 또는 폰번호입니다.');
     }
     return { message: '사용 가능' };
+  }
+
+  //기업_이메일, 사업자등록, 휴대폰번호 중복검사
+  @Post('company-check-duplicate')
+  async compnayCheckDuplicate(@Body() body: { email: string, businessNumber: string, phoneNumber: string }) {
+    const { email, businessNumber, phoneNumber } = body;
+    if (!email && businessNumber && !phoneNumber) {
+      throw new BadRequestException('다시 확인해 주세요')
+    }
+    const isDuplicate = await this.loginService.compnayCheckDuplicate(email, businessNumber, phoneNumber);
+    if (isDuplicate) {
+      throw new ConflictException('이미 사용중인 번호입니다.')
+    }
+    return { message: '사용가능' }
+
   }
 
   // 로그인

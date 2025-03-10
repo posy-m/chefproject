@@ -23,8 +23,10 @@ export class LoginService {
   async createUser(createUser: CreateUserDto): Promise<Users> {
     const { name, email, phoneNumber, password, userType } = createUser
 
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
+    // const salt = await bcrypt.genSalt(10)
+    // const hashedPassword = await bcrypt.hash(password, salt)
+
+    const hashedPassword = await this.hashingService.hash(password)
     return this.userModel.create({
       name, email, phoneNumber, password: hashedPassword, userType: userType || UserType.PERSONAL
     })
@@ -51,6 +53,21 @@ export class LoginService {
     const existingUser = await this.userModel.findOne({
       where: { [Op.or]: conditions }
     });
+    return !!existingUser;
+  }
+
+  //기업 이메일, 사업자등록, 휴대폰번호 중복검사
+  async compnayCheckDuplicate(email: string, businessNumber: string, phoneNumber: string,): Promise<boolean> {
+    const conditions = [];
+    if (email) conditions.push({ email });
+    if (businessNumber) conditions.push({ businessNumber });
+    if (phoneNumber) conditions.push({ phoneNumber });
+    if (conditions.length === 0) {
+      throw new BadRequestException('빈 괄호를 확인해주세요')
+    }
+    const existingUser = await this.userModel.findOne({
+      where: { [Op.or]: conditions }
+    })
     return !!existingUser;
   }
 
@@ -148,7 +165,8 @@ export class LoginService {
       if (!managerPassword) {
         throw new Error('MANAGER_PASSWORD가 설정되지 않았습니다.');
       }
-      const hashedPassword = await bcrypt.hash(managerPassword, 10);
+      // const hashedPassword = await bcrypt.hash(managerPassword, 10);
+      const hashedPassword = await this.hashingService.hash(managerPassword);
       await this.userModel.create({
         name: process.env.MANAGER_ID,
         email: '0000@admin.com',
