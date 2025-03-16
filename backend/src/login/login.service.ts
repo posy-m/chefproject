@@ -8,11 +8,14 @@ import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto, CreateCompanyUserDto, CreateUserDto, FindUserIdDto, ResetPasswordDto, UserCheckDto, UserLoginDto } from './dto/user.dto';
 import { Op } from 'sequelize';
 import { HashingService } from './hashing.service';
+import { CompanyInfo } from 'src/models/companyInfo.entity';
 
 
 @Injectable()
 export class LoginService {
   constructor(
+    @InjectModel(CompanyInfo)
+    private readonly businessModel: typeof CompanyInfo,
     @InjectModel(Users)
     private readonly userModel: typeof Users,
     private readonly jwtService: JwtService,
@@ -58,17 +61,27 @@ export class LoginService {
 
   //기업 이메일, 사업자등록, 휴대폰번호 중복검사
   async compnayCheckDuplicate(email: string, businessNumber: string, phoneNumber: string,): Promise<boolean> {
-    const conditions = [];
-    if (email) conditions.push({ email });
-    if (businessNumber) conditions.push({ businessNumber });
-    if (phoneNumber) conditions.push({ phoneNumber });
-    if (conditions.length === 0) {
+    const userConditions = [];
+    const companyConditions = [];
+    if (email) userConditions.push({ email });
+    if (phoneNumber) userConditions.push({ phoneNumber });
+    if (businessNumber) companyConditions.push({ businessNumber });
+
+    if (userConditions.length === 0 && companyConditions.length === 0) {
       throw new BadRequestException('빈 괄호를 확인해주세요')
     }
-    const existingUser = await this.userModel.findOne({
-      where: { [Op.or]: conditions }
-    })
-    return !!existingUser;
+    // Users 테이블에서 중복 검사
+    const existingUser = userConditions.length > 0
+      ? await this.userModel.findOne({ where: { [Op.or]: userConditions } })
+      : null;
+
+    // CompanyInfo 테이블에서 중복 검사 (businessNumber만 확인)
+    const existingCompany = companyConditions.length > 0
+      ? await this.businessModel.findOne({ where: { [Op.or]: companyConditions } })
+      : null;
+
+    // 둘 중 하나라도 존재하면 true 반환
+    return !!existingUser || !!existingCompany;
   }
 
 
