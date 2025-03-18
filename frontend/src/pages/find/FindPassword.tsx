@@ -1,11 +1,29 @@
 import React, { useState } from 'react'
 import styles from '../../styles/UserSignupPage.module.css'
+import { useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query';
+import axiosInstance from '../../zustand/axiosInstance';
 
 
 const FindPassword = () => {
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>('')
   const [phoneNumber, setPhoneNumber] = useState<string>('')
+
+
+  const findPassword = useMutation({
+    mutationFn: async (data: { email: string; phoneNumber: string; }) => {
+      const response = await axiosInstance.post('/login/verifyUser', data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      navigate('/changePassword', { state: { resetToken: data.resetToken } })
+    },
+    onError: () => {
+      alert('이메일 또는 휴대폰 번호가 일치하지 않습니다.')
+    }
+  })
 
 
   // 이메일 형식 검사
@@ -35,7 +53,7 @@ const FindPassword = () => {
         )}
 
       </div>
-      <button >비밀번호 변경</button>
+      <button onClick={() => findPassword.mutate({ email, phoneNumber })}>비밀번호 변경</button>
 
     </div>
   )

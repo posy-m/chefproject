@@ -13,6 +13,7 @@ import CompanyPage from './pages/CompanyPage';
 import AdminPage from './pages/AdminPage';
 import FindID from './pages/find/FindID';
 import FindPassword from './pages/find/FindPassword';
+import ChangePassword from './pages/find/ChangePassword';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path='adminPage' element={<AdminPage />} />
           <Route path='findId' element={<FindID />} />
           <Route path='findPassword' element={<FindPassword />} />
+          <Route path='changePassword' element={<ChangePassword />} />
         </Route>
       </Routes>
     </div >
