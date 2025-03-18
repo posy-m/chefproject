@@ -40,9 +40,16 @@ export class LoginService {
     const { name, email, phoneNumber, password, businessNumber } = createCompany;
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
-    return this.userModel.create({
-      name, email, phoneNumber, password: hashedPassword, businessNumber
-    })
+    const user = await this.userModel.create({
+      name, email, phoneNumber, password: hashedPassword
+    });
+    if (businessNumber) {
+      await this.businessModel.create({
+        userId: user.id,
+        businessNumber
+      });
+    }
+    return user;
   }
 
   //이메일,휴대폰 번호 중복검사
@@ -60,7 +67,7 @@ export class LoginService {
   }
 
   //기업 이메일, 사업자등록, 휴대폰번호 중복검사
-  async compnayCheckDuplicate(email: string, businessNumber: string, phoneNumber: string,): Promise<boolean> {
+  async companyCheckDuplicate(email: string, businessNumber: string, phoneNumber: string,): Promise<boolean> {
     const userConditions = [];
     const companyConditions = [];
     if (email) userConditions.push({ email });
@@ -77,11 +84,11 @@ export class LoginService {
 
     // CompanyInfo 테이블에서 중복 검사 (businessNumber만 확인)
     const existingCompany = companyConditions.length > 0
-      ? await this.businessModel.findOne({ where: { [Op.or]: companyConditions } })
+      ? await this.businessModel.findOne({ where: { businessNumber } })
       : null;
 
-    // 둘 중 하나라도 존재하면 true 반환
-    return !!existingUser || !!existingCompany;
+    return Boolean(existingUser || existingCompany);
+
   }
 
 

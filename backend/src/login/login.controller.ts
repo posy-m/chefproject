@@ -1,6 +1,7 @@
 import { BadRequestException, Body, ConflictException, Controller, Get, Post, Query, UseInterceptors } from '@nestjs/common';
 import { LoginService } from './login.service';
-import { CreateUserDto, FindUserIdDto, ResetPasswordDto, UserCheckDto, UserLoginDto } from './dto/user.dto';
+import { CreateCompanyUserDto, CreateUserDto, FindUserIdDto, ResetPasswordDto, UserCheckDto, UserLoginDto } from './dto/user.dto';
+import { log } from 'console';
 
 @UseInterceptors()
 @Controller('login')
@@ -17,7 +18,18 @@ export class LoginController {
     } catch (error) {
       console.error('회원가입 실패', error)
     }
+  }
+  //기업 회원가입
+  @Post('companysignup')
+  async companysignup(@Body() compnaysignupDTO: CreateCompanyUserDto) {
+    console.log(compnaysignupDTO, '기업 회원가입 요청 데이터')
+    try {
+      const createCompanyUser = await this.loginService.createCompanyUser(compnaysignupDTO);
+      return createCompanyUser;
+    } catch (error) {
+      console.error('기업 회원가입 실패', error);
 
+    }
   }
 
   // 개인_이메일,번호중복검사
@@ -36,12 +48,12 @@ export class LoginController {
 
   //기업_이메일, 사업자등록, 휴대폰번호 중복검사
   @Post('company-check-duplicate')
-  async compnayCheckDuplicate(@Body() body: { email: string, businessNumber: string, phoneNumber: string }) {
+  async companyCheckDuplicate(@Body() body: { email: string, businessNumber: string, phoneNumber: string }) {
     const { email, businessNumber, phoneNumber } = body;
-    if (!email && businessNumber && !phoneNumber) {
+    if (!email && !businessNumber && !phoneNumber) {
       throw new BadRequestException('다시 확인해 주세요')
     }
-    const isDuplicate = await this.loginService.compnayCheckDuplicate(email, businessNumber, phoneNumber);
+    const isDuplicate = await this.loginService.companyCheckDuplicate(email, businessNumber, phoneNumber);
     if (isDuplicate) {
       throw new ConflictException('이미 사용중인 번호입니다.')
     }

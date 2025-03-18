@@ -26,7 +26,7 @@ export class CreateUserDto {
 // 기업 회원가입
 export class CreateCompanyUserDto extends CreateUserDto {
   @IsString()
-  @IsOptional()
+  // @IsOptional()
   businessNumber: string;
 }
 
