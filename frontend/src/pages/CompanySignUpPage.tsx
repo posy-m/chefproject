@@ -1,12 +1,15 @@
 
 import styles from '../styles/UserSignupPage.module.css'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { AiFillEye, AiFillEyeInvisible, AiFillLayout } from 'react-icons/ai';
 import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query';
 import axiosInstance from '../zustand/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const CompanySignUpPage = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [showPw, setShowPw] = useState<boolean>(false);
   const [phoneNumber, setphoneNumber] = useState('')
@@ -54,7 +57,7 @@ const CompanySignUpPage = () => {
         }
         if (variables.phoneNumber) {
           setPhoneNumberValid(false);
-          setPhoneNumberMessage('이미 사용 중인 사업자등록자입니다.');
+          setPhoneNumberMessage('이미 사용 중인 폰번호입니다.');
         }
       } else {
         if (variables.email) {
@@ -88,11 +91,37 @@ const CompanySignUpPage = () => {
     const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{5,20}$/;
     return passwordRegex.test(password);
   };
+
+  // 회원가입 API 호출
+  const signUpMutation = useMutation({
+    mutationFn: async (companyData: { name: string; email: string; phoneNumber: string; businessNumber: string; password: string; userType: string }) => {
+      const response = await axiosInstance.post('login/companysignup', companyData);
+      return response.data
+    },
+    onSuccess: () => {
+      alert('회원가입이 완료되었습니다.');
+      navigate('/loginPage')
+    },
+    onError: (error) => {
+      alert('회원가입에 실패했습니다. 다시시도해주세요.')
+    }
+  })
+
+  // 회원가입 버튼 활성화 조건
+  const isSignUpEnabled = () =>
+    name.trim() !== '' &&
+    validateEmail(email) &&
+    emailValid === true &&
+    validatePhone(phoneNumber) &&
+    phoneNumberValid === true &&
+    validatePassword(password) &&
+    password === confirmPassword;
+
   return (
     <div className={styles['signup-box']}>
       <span>기업 회원가입</span>
       <div className={styles['signup-wrap']}>
-        <input placeholder='기업명' className={styles['default-input']} />
+        <input placeholder='기업명' className={styles['default-input']} required onChange={(e) => setName(e.target.value)} value={name} />
         <div className={styles['signup-doublecheck']}>
           <input placeholder='이메일' required onChange={(e) => setEmail(e.target.value)} value={email} />
           <button disabled={!validateEmail(email)}
@@ -138,7 +167,9 @@ const CompanySignUpPage = () => {
         {confirmPassword && password !== confirmPassword && (<p className={styles['error-feedback']}>비밀번호가 일치하지 않습니다.</p>)}
         {confirmPassword && password === confirmPassword && (<p className={styles['valid-feedback']}>비밀번호가 일치합니다.</p>)}
       </div>
-      <button>회원가입</button>
+      <button
+        disabled={!isSignUpEnabled()}
+        onClick={() => signUpMutation.mutate({ name, email, phoneNumber, businessNumber, password, userType: 'company' })}>회원가입</button>
     </div>
   )
 }
